@@ -6,6 +6,7 @@ import Home from './Home/Home'
 import Cart from './Cart/Cart'
 import Search from './Search/Search'
 import Contact from './Contact/Contact'
+import urlServer from './../../../api/urlServer'
 
 import homeIconS from '../../../media/appIcon/home.png';
 import homeIcon from '../../../media/appIcon/home0.png';
@@ -27,17 +28,27 @@ export default class Shop extends Component{
         }
     }
 
+    componentDidMount(){
+        const url = `${urlServer}`
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(resJSON => {
+                const { type, product } = resJSON
+                this.setState({types: type, topProducts: product})
+            })
+            .catch(error => alert(error))    
+    }
+
     openMenu(){
         const { open } = this.props 
         open()
     }
 
-    //types={types} topProducts={topProducts}
-
     render(){
         
         const { iconStyle } = styles;
-        const {selectedTab, cartArray} = this.state
+        const {selectedTab, cartArray, types, topProducts} = this.state
 
         return(
             <View style={{ flex: 1, backgroundColor: '#DBDBD8' }}>
@@ -51,7 +62,7 @@ export default class Shop extends Component{
                         renderSelectedIcon={() => <Image source={homeIconS} style={iconStyle} />}
                         selectedTitleStyle={{ color: '#34B089', fontFamily: 'Avenir' }}
                     >
-                        <Home />
+                        <Home types={types} topProducts={topProducts} />
                     </TabNavigator.Item>
                     <TabNavigator.Item
                         selected={selectedTab === 'cart'}
