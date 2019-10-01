@@ -42,7 +42,7 @@ export default class TopProduct extends Component{
                         )}
                         ItemSeparatorComponent={() => <View style={{ height: 1, width }} />}
                     />
-                </View>
+            </View>
         )
     }
 }
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     body: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        flexWrap: 'wrap',
+        flexDirection: 'column',
         paddingBottom: 10
     },
     productContainer: {

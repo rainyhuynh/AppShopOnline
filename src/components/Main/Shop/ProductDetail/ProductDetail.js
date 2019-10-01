@@ -28,6 +28,7 @@ export default class ProductDetail extends Component{
             descContainer, productImageStyle, descStyle, txtMaterial, txtColor
         } = styles;
 
+        ///get param from TopProduct
         const { name, price, color, material, description, images } = this.props.navigation.getParam('product')
 
         return(
