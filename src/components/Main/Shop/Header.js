@@ -3,10 +3,29 @@ import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image,TextInput }
 
 import icLogo from '../../../media/appIcon/ic_logo.png';
 import icMenu from '../../../media/appIcon/ic_menu.png';
+import Search from './Search/Search';
+
+import searchProduct from './../../../api/searchProduct'
+import global from './../../../api/global'
 
 const { height } = Dimensions.get('window');
 
 export default class Header extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            txtSearch: ''
+        }
+    }
+
+    onSearch(){
+        const { txtSearch } = this.state
+        this.setState({ txtSearch: ''})
+        searchProduct(txtSearch)
+            .then(arrProduct => global.setArraySearch(arrProduct))
+            .catch(err => console.log(err))
+    }
+
     render(){
         const { wrapper, row1, textInput, iconStyle, titleStyle } = styles;
         return (
@@ -19,7 +38,11 @@ export default class Header extends Component{
                     <Image source={icLogo} style={iconStyle} />
                 </View>
                 <TextInput 
+                    value={this.state.txtSearch}
+                    onChangeText={ text => this.setState({ txtSearch: text })}
+                    onFocus={() => global.gotoSearch()}
                     style={textInput}
+                    onSubmitEditing={this.onSearch.bind(this)}
                     placeholder="What do you want to buy?"
                 />
             </View>

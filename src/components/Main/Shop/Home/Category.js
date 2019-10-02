@@ -62,10 +62,10 @@ const styles = StyleSheet.create({
         color: '#AFAEAF'
     },
     imageStyle: {
-        height: '100%',
-        width: '100%',
+        height: imageHeight,
+        width: imageWidth,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     cateTitle: {
         fontSize: 20,

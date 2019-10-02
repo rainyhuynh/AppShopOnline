@@ -7,6 +7,7 @@ import Cart from './Cart/Cart'
 import Search from './Search/Search'
 import Contact from './Contact/Contact'
 import urlServer from './../../../api/urlServer'
+import global from '../../../api/global'
 
 import homeIconS from '../../../media/appIcon/home.png';
 import homeIcon from '../../../media/appIcon/home0.png';
@@ -26,6 +27,9 @@ export default class Shop extends Component{
             topProducts: [],
             cartArray: [] 
         }
+
+        global.addProductToCart = this.addProductToCart.bind(this);
+        global.gotoSearch       = this.gotoSearch.bind(this);
     }
 
     componentDidMount(){
@@ -38,6 +42,19 @@ export default class Shop extends Component{
                 this.setState({types: type, topProducts: product})
             })
             .catch(error => alert(error))    
+    }
+
+    addProductToCart(product){
+        const isExist = this.state.cartArray.some(e => e.product.id === product.id);
+        if (isExist) return false;
+        this.setState(
+            { cartArray: this.state.cartArray.concat({ product, quantity: 1 }) }
+            //,() => saveCart(this.state.cartArray)
+        );
+    }
+
+    gotoSearch(){
+        this.setState({ selectedTab: 'search'})
     }
 
     openMenu(){

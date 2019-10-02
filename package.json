@@ -12,6 +12,7 @@
     "react-native": "0.60.1",
     "react-native-drawer": "^2.5.1",
     "react-native-gesture-handler": "^1.4.1",
+    "react-native-maps": "https://github.com/react-community/react-native-maps.git",
     "react-native-swiper": "^1.5.14",
     "react-native-tab-navigator": "^0.3.4",
     "react-navigation": "^4.0.10",

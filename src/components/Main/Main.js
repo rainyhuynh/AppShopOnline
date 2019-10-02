@@ -13,12 +13,11 @@ export default class Main extends Component{
     };
 
     render(){
-        const {navigator} = this.props
 
         return(
              <Drawer
                 ref={(ref) => this._drawer = ref}
-                content={<Menu navigation={ navigator } />}
+                content={<Menu navigation={ this.props.navigation } />}
                 openDrawerOffset={0.4}
                 tapToClose
                 >

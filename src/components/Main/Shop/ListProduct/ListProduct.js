@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Image, Dimensions, FlatList } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Image, Dimensions, FlatList, RefreshControl } from 'react-native';
 
 import getListProducts from '../../../../api/getListProduct'
 import urlServer from '../../../../api/urlServer'
@@ -19,9 +19,10 @@ export default class ListProduct extends Component{
 
         this.state = {
             listProducts: [],
-            refeshing: false,
+            refreshing: false,
             page: 1
-        }
+        },
+        this.arrProducts = []
     }
 
     componentDidMount(){
@@ -30,7 +31,8 @@ export default class ListProduct extends Component{
         
         getListProducts(Idtype, 1)
             .then(arrProducts => {
-                this.setState({ listProducts: arrProducts })
+                this.arrProducts = arrProducts
+                this.setState({ listProducts: this.arrProducts })
             })
             .catch(error => console.log(error))
     }
@@ -38,7 +40,26 @@ export default class ListProduct extends Component{
     navigateProductDetail(product){
         this.props.navigation.navigate("ProductDetail", {product})
     }
-    
+
+    onRefresh(){
+        this.setState({ refreshing: true });
+        const newPage = this.state.page + 1;
+        const idType = id;
+        getListProduct(idType, newPage)
+        .then(arrProduct => {
+            this.arrProducts = this.arrProducts.concat(arrProduct);
+            
+            alert("Refresh control")
+            console.log(this.arrProducts)
+
+            this.setState({ 
+                listProducts: this.arrProducts,
+                refreshing: false 
+            });
+        })
+        .catch(err => console.log(err));
+    }
+
     render(){
         
         const { container, header, wrapper, iconbackStyles,
@@ -46,8 +67,8 @@ export default class ListProduct extends Component{
             productImage, productInfo, wrapImageStyle, 
             txtName, txtPrice, txtMaterial, txtColor, txtShowDetail } = styles;
 
-        const { name } = this.props.navigation.getParam('category')
-
+        const { id, name } = this.props.navigation.getParam('category')
+     
         return(
             <View style={container}>
                 <ScrollView style={wrapper}>
@@ -65,6 +86,12 @@ export default class ListProduct extends Component{
                         keyExtractor={item => item.id}
                         data={this.state.listProducts}
                         numColumns={1}
+                        refreshControl={
+                            <RefreshControl 
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.onRefresh.bind(this)}
+                            />
+                        }
                         renderItem={({item}) => (
                             <View style={productContainer}>
                                 <View style={wrapImageStyle}>
@@ -84,6 +111,7 @@ export default class ListProduct extends Component{
                                 </View>
                             </View>
                             )}
+     
                         />
      
                 </ScrollView>

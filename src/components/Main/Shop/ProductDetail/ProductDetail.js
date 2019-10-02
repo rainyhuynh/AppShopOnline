@@ -14,8 +14,9 @@ export default class ProductDetail extends Component{
         navigation.goBack()
     }
 
-    addProductToCart(){
-
+    addThisProductToCart() {
+        const product = this.props.navigation.getParam('product')
+        global.addProductToCart(product);
     }
     
     render(){
@@ -34,50 +35,52 @@ export default class ProductDetail extends Component{
         return(
             <View style={wrapper}>
                 <View style={cardStyle}>
-                    <View style={header}>
-                        <TouchableOpacity onPress={this.goBack.bind(this)}>
-                            <Image style={backStyle} source={back} />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={this.addProductToCart.bind(this)}
-                        >
-                            <Image style={cartStyle} source={cart} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={imageContainer}>
-                        <ScrollView style={{ flexDirection: 'row', padding: 10, height: swiperHeight }} horizontal >
-                            <Image source={{ uri: `${urlServer}images/product/${images[0]}` }} style={productImageStyle} />
-                            <Image source={{ uri: `${urlServer}images/product/${images[1]}` }} style={productImageStyle} />
-                        </ScrollView>
-                    </View>
-                    <View style={footer}>
-                        <View style={titleContainer}>
-                            <Text style={textMain}>
-                                <Text style={textBlack}>{name.toUpperCase()}</Text>
-                                <Text style={textHighlight}> / </Text>
-                                <Text style={textSmoke}>{price}$</Text>
-                            </Text>
+                    <ScrollView>
+                        <View style={header}>
+                            <TouchableOpacity onPress={this.goBack.bind(this)}>
+                                <Image style={backStyle} source={back} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={this.addThisProductToCart.bind(this)}
+                            >
+                                <Image style={cartStyle} source={cart} />
+                            </TouchableOpacity>
                         </View>
-                        <View style={descContainer}>
-                            <Text style={descStyle}>{description}</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 15 }}>
-                                <Text style={txtMaterial}>Material {material} </Text>
-                                <View style={{ flexDirection: 'row' }} >
-                                    <Text style={txtColor}>Color {color}</Text>
-                                    <View style={{ height: 15, width: 15, backgroundColor: color.toLowerCase(), borderRadius: 15, marginLeft: 10, borderWidth: 1, borderColor: '#C21C70' }} />
+                        <View style={imageContainer}>
+                            <ScrollView style={{ flexDirection: 'row', padding: 10, height: swiperHeight }} horizontal >
+                                <Image source={{ uri: `${urlServer}images/product/${images[0]}` }} style={productImageStyle} />
+                                <Image source={{ uri: `${urlServer}images/product/${images[1]}` }} style={productImageStyle} />
+                            </ScrollView>
+                        </View>
+                        <View style={footer}>
+                            <View style={titleContainer}>
+                                <Text style={textMain}>
+                                    <Text style={textBlack}>{name.toUpperCase()}</Text>
+                                    <Text style={textHighlight}> / </Text>
+                                    <Text style={textSmoke}>{price}$</Text>
+                                </Text>
+                            </View>
+                            <View style={descContainer}>
+                                <Text style={descStyle}>{description}</Text>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 15 }}>
+                                    <Text style={txtMaterial}>Material {material} </Text>
+                                    <View style={{ flexDirection: 'row' }} >
+                                        <Text style={txtColor}>Color {color}</Text>
+                                        <View style={{ height: 15, width: 15, backgroundColor: color.toLowerCase(), borderRadius: 15, marginLeft: 10, borderWidth: 1, borderColor: '#C21C70' }} />
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
+                    </ScrollView>
                 </View>
             </View>
         )
     }
 }
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const swiperWidth = (width / 1.8) - 30;
-const swiperHeight = (swiperWidth * 452) / 361;
+const swiperHeight = (swiperWidth * 1200) / 960;
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -117,7 +120,8 @@ const styles = StyleSheet.create({
         flex: 6,
         alignItems: 'center',
         flexDirection: 'row',
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        marginTop: 15
     },
     textMain: {
         paddingLeft: 20,
@@ -142,13 +146,16 @@ const styles = StyleSheet.create({
     titleContainer: {
         borderBottomWidth: 1,
         borderColor: '#F6F6F6',
-        marginHorizontal: 20,
-        paddingBottom: 5
+        marginHorizontal: 10,
+        paddingBottom: 5,
+        marginTop: 20,
+        alignItems: 'center'
     },
     descContainer: {
-        margin: 10,
+        margin: 5,
+        marginBottom: 10,
         paddingTop: 10,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
     },
     descStyle: {
         color: '#AFAFAF'
