@@ -7,6 +7,7 @@ import ChangeInfo from './ChangeInfo/ChangeInfo';
 import Main from './Main/Main';
 import OrderHistory from './OrderHistory/OrderHistory';
 
+
 const StackNavigator = createStackNavigator({
     Authentication: { screen: Authentication },
     ChangeInfo: { screen: ChangeInfo },
@@ -19,4 +20,9 @@ const StackNavigator = createStackNavigator({
 });
 
 export default createAppContainer(StackNavigator);
+
+//const app = createAppContainer(StackNavigator);
+
+
+
 

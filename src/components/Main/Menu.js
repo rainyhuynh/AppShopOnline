@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import saveToken from './../../api/saveToken'
 
 import global from './../../api/global';
 import profileIcon from './../../media/images/profile.png'
@@ -11,16 +12,17 @@ export default class Menu extends Component{
         global.onSignIn = this.onSignIn.bind(this);
     }
 
-    onSignIn(){
-
+    onSignIn(user){
+        this.setState({ user })
     }
 
     onSignOut(){
-
+        this.setState({ user: null });
+        saveToken('');
     }
 
     gotoAuthentication(){
-        
+        this.props.navigation.navigate("Authentication")
     }
 
     gotoOrderHistory(){
@@ -64,7 +66,7 @@ export default class Menu extends Component{
                 <View />
             </View>
         );
-        const mainJSX = !this.state.user ? loginJSX : logoutJSX;
+        const mainJSX = this.state.user ? loginJSX : logoutJSX;
         return (
             <View style={container}>
                 <Image source={profileIcon} style={profile} />
@@ -122,6 +124,6 @@ const styles = StyleSheet.create({
     username: {
         color: '#fff', 
         fontFamily: 'Avenir', 
-        fontSize: 15
+        fontSize: 17
     }
 });

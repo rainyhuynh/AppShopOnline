@@ -3,9 +3,11 @@ import { AsynStorage } from 'react-native'
 const saveToken = async (token) => {
     try{
         await AsynStorage.setItem('@token', token)
-        return 'Save token is successful.'
+        return 'THANH_CONG'
     }
     catch(e){
         return e
     }
 }
+
+export default saveToken;
