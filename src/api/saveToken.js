@@ -1,8 +1,8 @@
-import { AsynStorage } from 'react-native'
+import { AsyncStorage } from 'react-native'
 
 const saveToken = async (token) => {
     try{
-        await AsynStorage.setItem('@token', token)
+        await AsyncStorage.setItem('@token', token)
         return 'THANH_CONG'
     }
     catch(e){

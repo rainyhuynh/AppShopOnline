@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Dimensions } from 'react-native'
 
+import getToken from '../../api/getToken'
+import getOrderHistory from '../../api/getOrderHistory'
+
 import backSpecial from './../../media/appIcon/backs.png';
 
 export default class OrderHistory extends PureComponent{
@@ -11,6 +14,14 @@ export default class OrderHistory extends PureComponent{
         }
     }
 
+    componentDidMount() {
+        getToken()
+        .then(token => getOrderHistory(token))
+        .then(arrOrders => this.setState({ arrOrders }))
+        .catch(err => console.log(err));
+    }
+
+
     goBackToMain(){
         const {navigation} = this.props
         navigation.goBack()
@@ -19,6 +30,7 @@ export default class OrderHistory extends PureComponent{
     render(){
         
         const {wrapper, header, body, backIconStyle, headerTitle, orderRow, rowStyle } = styles
+        const { arrOrders } = this.state
 
         return(
             <View style={wrapper}>
@@ -31,42 +43,26 @@ export default class OrderHistory extends PureComponent{
 
                 <View style={body}>
                     <ScrollView>
-                        <View style={orderRow}>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Order id:</Text>
-                                <Text style={{ color: '#2ABB9C' }}>ORD001</Text>
-                            </View>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>OrderTime:</Text>
-                                <Text style={{ color: '#C21C70' }}>2017-04-19 08:30:08</Text>
-                            </View>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Status:</Text>
-                                <Text style={{ color: '#2ABB9C' }}>Pending</Text>
-                            </View>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Total:</Text>
-                                <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>100$</Text>
-                            </View>
-                        </View>
-                        <View style={orderRow}>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Order id:</Text>
-                                <Text style={{ color: '#2ABB9C' }}>ORD001</Text>
-                            </View>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>OrderTime:</Text>
-                                <Text style={{ color: '#C21C70' }}>2017-04-19 08:30:08</Text>
-                            </View>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Status:</Text>
-                                <Text style={{ color: '#2ABB9C' }}>Pending</Text>
-                            </View>
-                            <View style={rowStyle}>
-                                <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Total:</Text>
-                                <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>100$</Text>
-                            </View>
-                        </View>
+                        { arrOrders.map(e => {
+                            return (<View style={orderRow} key={e.id}>
+                                <View style={rowStyle}>
+                                    <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Order id:</Text>
+                                    <Text style={{ color: '#2ABB9C' }}>ORD{e.id}</Text>
+                                </View>
+                                <View style={rowStyle}>
+                                    <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>OrderTime:</Text>
+                                    <Text style={{ color: '#C21C70' }}>{e.date_order}</Text>
+                                </View>
+                                <View style={rowStyle}>
+                                    <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Status:</Text>
+                                    <Text style={{ color: '#2ABB9C' }}>{e.status ? 'Completed' : 'Pending'}</Text>
+                                </View>
+                                <View style={rowStyle}>
+                                    <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Total:</Text>
+                                    <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.total}$</Text>
+                                </View>
+                            </View>);
+                        })}
                     </ScrollView>
                 </View>
             </View>

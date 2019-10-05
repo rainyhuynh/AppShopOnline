@@ -8,7 +8,7 @@ import ListProduct from '../ListProduct/ListProduct'
 import ProductDetail from './../ProductDetail/ProductDetail'
 
 // const StackNavigator = createStackNavigator({
-//         HomeView: { screen: HomeView, params: this.props },
+//         HomeView: { screen: HomeView, params: this.props},
 //         ProductDetail: { screen: ProductDetail },
 //         ListProduct: { screen: ListProduct }
 //     }, {
@@ -17,8 +17,7 @@ import ProductDetail from './../ProductDetail/ProductDetail'
 //             headerMode: 'none'
 //     });
 
-// export default createAppContainer(StackNavigator);
-
+//export default createAppContainer(StackNavigator);
 
 export default class Home extends Component{
         render(){

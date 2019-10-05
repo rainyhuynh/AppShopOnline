@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { 
     View, Text, StyleSheet, Image, Dimensions, ScrollView, TouchableOpacity 
 } from 'react-native';
+
 import urlServer from '../../../../api/urlServer'
+import global from '../../../../api/global'
 
 const back = require('../../../../media/appIcon/back.png');
 const cart = require('../../../../media/appIcon/cartfull.png');
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         marginHorizontal: 10,
-        marginTop: 15
+        //marginTop: 15
     },
     textMain: {
         paddingLeft: 20,

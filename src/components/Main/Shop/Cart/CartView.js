@@ -11,24 +11,40 @@ function toTitleCase(str){
     return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
-export default class CartView extends Component{
+class CartView extends Component{
     
     gotoDetail(product) {
         const { navigation } = this.props;
         navigation.navigate('ProductDetail', { product});
     }
 
+    removeProduct(id){
+
+    }
+
+    incrQuantity(id){
+
+    }
+
+    decrQuantity(id){
+
+    }
+
+    onSendOrder(){
+
+    }
+
     render(){
         const { main, checkoutButton, checkoutTitle, wrapper,
-                product, mainRight, productController,
+                productStyle, mainRight, productController,
                 txtName, txtPrice, productImage, numberOfProduct, 
-                txtShowDetail, showDetailContainer } = styles;
-
-        console.log('CartView')
-        console.log(this.props)
+                txtShowDetail, showDetailContainer,functionText } = styles;
 
         const { cartArray } = this.props.navigation.state.params
-
+        const arrTotal = cartArray.map(e => e.product.price * e.quantity)
+        const total = arrTotal.length ? arrTotal.reduce((a, b) => a + b) : 0
+        console.log('CartView')
+    
         return(
             <View style={wrapper}>
                 <ScrollView style={main}>
@@ -38,29 +54,29 @@ export default class CartView extends Component{
                         data={cartArray}
                         numColumns={1}
                         renderItem={({item}) => (
-                            <View style={product}>
-                                <Image source={{ uri: `${urlServer}images/product/${images[0]}` }} style={productImage} />
+                            <View style={productStyle}>
+                                <Image source={{ uri: `${urlServer}images/product/${item.product.images[0]}` }} style={productImage} />
                                 <View style={mainRight}>
                                     <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                                        <Text style={txtName}>{toTitleCase('black of the')}</Text>
-                                        <TouchableOpacity>
-                                            <Text style={{ fontFamily: 'Avenir', color: '#969696' }}>X</Text>
+                                        <Text style={txtName}>{toTitleCase(item.product.name)}</Text>
+                                        <TouchableOpacity onPress={this.removeProduct(item.product.id)}>
+                                            <Text style={{ fontFamily: 'Avenir', color: '#969696', fontSize: 15 }}>X</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View>
-                                        <Text style={txtPrice}>{100}$</Text>
+                                        <Text style={txtPrice}>{item.product.price}$</Text>
                                     </View>
                                     <View style={productController}>
                                         <View style={numberOfProduct}>
-                                            <TouchableOpacity>
-                                                <Text>+</Text>
+                                            <TouchableOpacity onPress={this.incrQuantity(item.product.id)}>
+                                                <Text styles={functionText}>+</Text>
                                             </TouchableOpacity>
-                                            <Text>{3}</Text>
-                                            <TouchableOpacity>
-                                                <Text>-</Text>
+                                            <Text>{item.quantity}</Text>
+                                            <TouchableOpacity onPress={this.decrQuantity(item.product.id)}>
+                                                <Text styles={functionText}>-</Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <TouchableOpacity style={showDetailContainer} onPress={this.gotoDetail(item)}>
+                                        <TouchableOpacity style={showDetailContainer} onPress={() => this.gotoDetail(item.product)}>
                                             <Text style={txtShowDetail}>SHOW DETAILS</Text>
                                         </TouchableOpacity>
                                     </View>
@@ -70,8 +86,8 @@ export default class CartView extends Component{
                     />
                     
                 </ScrollView>
-                <TouchableOpacity style={checkoutButton}>
-                    <Text style={checkoutTitle}>TOTAL {1000}$ CHECKOUT NOW</Text>
+                <TouchableOpacity style={checkoutButton} onPress={this.onSendOrder.bind(this)}>
+                    <Text style={checkoutTitle}>TOTAL {total}$ CHECKOUT NOW</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -105,7 +121,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontFamily: 'Avenir'
     },
-    product: {
+    productStyle: {
         flexDirection: 'row',
         margin: 10,
         padding: 10,
@@ -158,6 +174,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-end'
+    },
+    functionText: {
+        fontSize: 15,
     }
 });
 
+export default CartView

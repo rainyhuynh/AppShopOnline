@@ -1,8 +1,8 @@
-import { AsynStorage} from 'react-native'
+import { AsyncStorage} from 'react-native'
 
 const getToken = async () => {
     try{
-        const value = await AsynStorage.getItem('@token')
+        const value = await AsyncStorage.getItem('@token')
         if(value !== null)
             return value
         return ''

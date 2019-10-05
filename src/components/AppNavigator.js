@@ -1,3 +1,4 @@
+import React, { Component } from 'react'
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { fromLeft } from 'react-navigation-transitions';
@@ -7,6 +8,8 @@ import ChangeInfo from './ChangeInfo/ChangeInfo';
 import Main from './Main/Main';
 import OrderHistory from './OrderHistory/OrderHistory';
 
+import refreshToken from './../api/refreshToken'
+import global from './../api/global'
 
 const StackNavigator = createStackNavigator({
     Authentication: { screen: Authentication },
@@ -19,9 +22,19 @@ const StackNavigator = createStackNavigator({
         headerMode: 'none'
 });
 
-export default createAppContainer(StackNavigator);
+const AppNavi = createAppContainer(StackNavigator);
 
-//const app = createAppContainer(StackNavigator);
+export default class AppNavigator extends Component{
+    componentDidMount(){
+        setInterval(refreshToken, 30000);
+    }
+
+    render(){
+        return(
+            <AppNavi />
+        )
+    }
+}
 
 
 

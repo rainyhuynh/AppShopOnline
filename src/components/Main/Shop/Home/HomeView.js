@@ -6,7 +6,6 @@ import TopProduct from './TopProduct'
 
 export default class HomeView extends Component{
     render(){
-
         const { types, topProducts } = this.props.navigation.state.params
 
         return(
