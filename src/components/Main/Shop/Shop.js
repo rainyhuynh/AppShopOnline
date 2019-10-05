@@ -6,8 +6,12 @@ import Home from './Home/Home'
 import Cart from './Cart/Cart'
 import Search from './Search/Search'
 import Contact from './Contact/Contact'
+
 import urlServer from './../../../api/urlServer'
 import global from '../../../api/global'
+import saveCart from '../../../api/saveCart'
+import getCart from '../../../api/getCart'
+//import removeCart from '../../../api/removeCart'
 
 import homeIconS from '../../../media/appIcon/home.png';
 import homeIcon from '../../../media/appIcon/home0.png';
@@ -28,8 +32,13 @@ export default class Shop extends Component{
             cartArray: [] 
         }
 
-        global.addProductToCart = this.addProductToCart.bind(this);
-        global.gotoSearch       = this.gotoSearch.bind(this);
+        //removeCart()
+
+        global.addProductToCart     = this.addProductToCart.bind(this);
+        global.gotoSearch           = this.gotoSearch.bind(this);
+        global.incrQuantity         = this.incrQuantity.bind(this);
+        global.decrQuantity         = this.decrQuantity.bind(this);
+        global.removeProduct        = this.removeProduct.bind(this);
     }
 
     componentDidMount(){
@@ -42,19 +51,50 @@ export default class Shop extends Component{
                 this.setState({types: type, topProducts: product})
             })
             .catch(error => alert(error))    
+
+            getCart()
+            .then(cartArray => this.setState({ cartArray }));
     }
 
     addProductToCart(product){
+
         const isExist = this.state.cartArray.some(e => e.product.id === product.id);
         if (isExist) return false;
         this.setState(
             { cartArray: this.state.cartArray.concat({ product, quantity: 1 }) }
-            //,() => saveCart(this.state.cartArray)
+                ,() => saveCart(this.state.cartArray)
         );
     }
 
     gotoSearch(){
         this.setState({ selectedTab: 'search'})
+    }
+
+    incrQuantity(productId) {
+        const newCart = this.state.cartArray.map(e => {
+            if (e.product.id !== productId) return e;
+            return { product: e.product, quantity: e.quantity + 1 };
+        });
+        this.setState({ cartArray: newCart } 
+            ,() => saveCart(this.state.cartArray)
+        );
+    }
+
+    decrQuantity(productId) {
+        const newCart = this.state.cartArray.map(e => {
+            if (e.product.id !== productId) return e;
+            return { product: e.product, quantity: e.quantity - 1 };
+        });
+        this.setState({ cartArray: newCart }
+            ,() => saveCart(this.state.cartArray)
+        );
+    }
+
+    removeProduct(productId) {
+        const newCart = this.state.cartArray.filter(e => e.product.id !== productId);
+        this.setState({ cartArray: newCart }, 
+            () => saveCart(this.state.cartArray)
+        );
     }
 
     openMenu(){

@@ -9,9 +9,10 @@ const sp1 = require('../../../../media/images/sp1.jpeg')
 
 const { width, height } = Dimensions.get("window")
 
-function toTitleCase(str) {
+function toTitleCase(str){
     return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
+
 
 export default class ListProduct extends Component{
     constructor(props){

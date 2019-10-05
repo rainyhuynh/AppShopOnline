@@ -4,9 +4,10 @@ import { StyleSheet, Text, TouchableOpacity, ScrollView, View, Image, Dimensions
 import global from '../../../../api/global'
 import urlServer from '../../../../api/urlServer'
 
-function toTitleCase(str) {
+function toTitleCase(str){
     return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
+
 
 export default class SearchView extends Component {
     constructor(props){
